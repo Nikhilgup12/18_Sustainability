@@ -1,25 +1,17 @@
 import pandas as pd
-import glob
 
-# Paths to the folders containing your CSV files
-folder_paths = ['wind_power_data/*.csv', 'Grid_data/*.csv']  # Adjust the paths as needed
+# Read both CSV files into DataFrames
+merged_data = pd.read_csv("merged_data.csv")
+merged_data1 = pd.read_csv("merged_data1.csv")
 
-# Use glob to find all CSV files in both folders
-file_names = []
-for path in folder_paths:
-    file_names.extend(glob.glob(path))
+# Option 1: Concatenate DataFrames (vertically stacking)
+merged_all_data = pd.concat([merged_data, merged_data1])
 
-# Assuming the encoding might differ or to handle potential UnicodeDecodeErrors
-encoding_type = 'ISO-8859-1'
+# Option 2: Append DataFrames (adding rows from merged_data1 to merged_data)
+# merged_all_data = merged_data.append(merged_data1, ignore_index=True)  # Optional: ignore index resetting
 
-# Load each file into a DataFrame and store them in a list
-dfs = [pd.read_csv(file, encoding=encoding_type) for file in file_names]
+# Print a sample of the merged data (optional)
+ # View the first few rows
 
-# Merge (concatenate) the list of DataFrames into a single DataFrame
-merged_data = pd.concat(dfs, ignore_index=True)
-
-# Save the merged DataFrame to a new CSV file
-merged_data.to_csv('merged_data.csv', index=False)
-
-# Indicate to the user that the file has been saved
-print("Merged data saved to 'merged_data.csv'.")
+# Save the final merged data to a new CSV file (optional)
+merged_all_data.to_csv("merged_all_data.csv", index=False)  # Optional: remove index column
